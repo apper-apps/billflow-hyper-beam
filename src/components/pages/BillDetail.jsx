@@ -305,17 +305,18 @@ const handleSubmit = async (e) => {
     try {
       setLoading(true);
       
-      if (formData.gateway === "paystack" || formData.gateway === "flutterwave") {
+if (formData.gateway === "paystack" || formData.gateway === "flutterwave") {
         // Process payment through gateway
+        const clientEmail = bill?.clientId?.email || bill?.clientId?.Email || "client@example.com";
         const paymentResult = formData.gateway === "paystack" 
           ? await paymentService.processPaystackPayment({
-amount: formData.amount,
-              email: client.email || client.Email || "client@example.com"
-            })
+            amount: formData.amount,
+            email: clientEmail
+          })
           : await paymentService.processFlutterwavePayment({
-              amount: formData.amount,
-              email: "client@example.com"
-            });
+            amount: formData.amount,
+            email: clientEmail
+          });
 
         // Record the payment
         await paymentService.create({
