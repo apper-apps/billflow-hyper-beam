@@ -47,26 +47,26 @@ const Dashboard = () => {
     loadDashboardData();
   }, []);
 
-  const calculateStats = () => {
+const calculateStats = () => {
     const totalRevenue = bills
       .filter(bill => bill.status === "paid")
-      .reduce((sum, bill) => sum + bill.total, 0);
+      .reduce((sum, bill) => sum + (bill.total || 0), 0);
     
     const pendingAmount = bills
       .filter(bill => bill.status === "pending")
-      .reduce((sum, bill) => sum + bill.total, 0);
+      .reduce((sum, bill) => sum + (bill.total || 0), 0);
     
     const overdueAmount = bills
       .filter(bill => bill.status === "overdue" || 
         (bill.status === "pending" && isAfter(new Date(), parseISO(bill.dueDate))))
-      .reduce((sum, bill) => sum + bill.total, 0);
+      .reduce((sum, bill) => sum + (bill.total || 0), 0);
     
     const thisMonthRevenue = bills
       .filter(bill => 
         bill.status === "paid" && 
         new Date(bill.createdAt).getMonth() === new Date().getMonth()
       )
-      .reduce((sum, bill) => sum + bill.total, 0);
+      .reduce((sum, bill) => sum + (bill.total || 0), 0);
 
     return {
       totalRevenue,
@@ -180,9 +180,9 @@ const Dashboard = () => {
                       Due: {format(parseISO(bill.dueDate), "MMM dd, yyyy")}
                     </p>
                   </div>
-                  <div className="text-right ml-4">
+<div className="text-right ml-4">
                     <p className="text-lg font-bold text-gray-900">
-                      ${bill.total.toLocaleString()}
+                      {bill.total ? `$${bill.total.toLocaleString()}` : "N/A"}
                     </p>
                   </div>
                 </div>
