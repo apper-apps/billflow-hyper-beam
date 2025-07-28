@@ -189,9 +189,9 @@ const handlePDFPreview = async (bill, e) => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
+<td className="px-6 py-4">
                     <p className="text-lg font-bold text-gray-900">
-                      ${bill.total.toLocaleString()}
+                      ${(bill.total ?? 0).toLocaleString()}
                     </p>
                   </td>
                   <td className="px-6 py-4">
