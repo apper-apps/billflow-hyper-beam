@@ -18,12 +18,14 @@ const Settings = () => {
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [settings, setSettings] = useState({
+const [settings, setSettings] = useState({
     company: {
       name: "",
       email: "",
       phone: "",
-      address: "",
+      city: "",
+      state: "",
+      country: "",
       website: "",
       taxId: ""
     },
@@ -79,7 +81,7 @@ const Settings = () => {
     }
   };
 
-  const handleCompanyChange = (field, value) => {
+const handleCompanyChange = (field, value) => {
     setSettings(prev => ({
       ...prev,
       company: {
@@ -202,7 +204,7 @@ const Settings = () => {
           </h2>
         </div>
 
-        <form onSubmit={saveCompanyInfo} className="space-y-4">
+<form onSubmit={saveCompanyInfo} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               label={t('settings.company.name')}
@@ -236,13 +238,26 @@ const Settings = () => {
             />
           </div>
           
-          <FormField
-            type="textarea"
-            label={t('settings.company.address')}
-            value={settings.company.address}
-            onChange={(e) => handleCompanyChange('address', e.target.value)}
-            rows={3}
-          />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FormField
+              label="City"
+              value={settings.company.city}
+              onChange={(e) => handleCompanyChange('city', e.target.value)}
+              placeholder="Enter city"
+            />
+            <FormField
+              label="State"
+              value={settings.company.state}
+              onChange={(e) => handleCompanyChange('state', e.target.value)}
+              placeholder="Enter state"
+            />
+            <FormField
+              label="Country"
+              value={settings.company.country}
+              onChange={(e) => handleCompanyChange('country', e.target.value)}
+              placeholder="Enter country"
+            />
+          </div>
 
           <div className="flex justify-end">
             <Button

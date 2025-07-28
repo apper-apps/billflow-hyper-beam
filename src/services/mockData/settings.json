@@ -4,7 +4,9 @@
     "name": "Your Agency Name",
     "email": "admin@youragency.com",
     "phone": "+1 (555) 123-4567",
-    "address": "123 Business St\nSuite 100\nCity, State 12345",
+    "city": "New York",
+    "state": "NY",
+    "country": "United States",
     "website": "https://www.youragency.com",
     "taxId": "12-3456789"
   },

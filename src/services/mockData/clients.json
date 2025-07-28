@@ -4,7 +4,9 @@
     "name": "TechStart Solutions",
     "email": "contact@techstart.com",
     "phone": "+1 (555) 123-4567",
-    "address": "123 Innovation Drive, San Francisco, CA 94105",
+    "city": "San Francisco",
+    "state": "CA",
+    "country": "United States",
     "createdAt": "2024-01-15T10:30:00Z",
     "paymentTerms": 30
   },
@@ -13,7 +15,9 @@
     "name": "Digital Marketing Pro",
     "email": "hello@digitalmarketingpro.com",
     "phone": "+1 (555) 234-5678",
-    "address": "456 Marketing Street, New York, NY 10001",
+    "city": "New York",
+    "state": "NY",
+    "country": "United States",
     "createdAt": "2024-02-01T14:20:00Z",
     "paymentTerms": 15
   },
@@ -22,7 +26,9 @@
     "name": "Green Energy Corp",
     "email": "info@greenenergy.com",
     "phone": "+1 (555) 345-6789",
-    "address": "789 Sustainability Ave, Austin, TX 78701",
+    "city": "Austin",
+    "state": "TX",
+    "country": "United States",
     "createdAt": "2024-02-15T09:45:00Z",
     "paymentTerms": 30
   },
@@ -31,7 +37,9 @@
     "name": "Retail Plus",
     "email": "support@retailplus.com",
     "phone": "+1 (555) 456-7890",
-    "address": "321 Commerce Blvd, Chicago, IL 60601",
+    "city": "Chicago",
+    "state": "IL",
+    "country": "United States",
     "createdAt": "2024-03-01T11:15:00Z",
     "paymentTerms": 45
   },
@@ -40,7 +48,9 @@
     "name": "HealthTech Innovations",
     "email": "contact@healthtech.com",
     "phone": "+1 (555) 567-8901",
-    "address": "654 Medical Center Dr, Boston, MA 02101",
+    "city": "Boston",
+    "state": "MA",
+    "country": "United States",
     "createdAt": "2024-03-10T16:30:00Z",
     "paymentTerms": 30
   }
