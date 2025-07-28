@@ -236,10 +236,9 @@ es: {
         confirmPassword: "Confirmar Contraseña",
         twoFactor: "Autenticación de Dos Factores"
       },
-      messages: {
+messages: {
         saveSuccess: "Configuración guardada exitosamente",
         passwordChanged: "Contraseña cambiada exitosamente"
-passwordChanged: "Contraseña cambiada exitosamente"
       }
     }
   },
@@ -372,10 +371,10 @@ passwordChanged: "Contraseña cambiada exitosamente"
         confirmPassword: "Confirmer le mot de passe",
         twoFactor: "Authentification à deux facteurs"
       },
-      messages: {
+messages: {
         saveSuccess: "Paramètres enregistrés avec succès",
         passwordChanged: "Mot de passe changé avec succès"
-}
+      }
     }
   },
   de: {
@@ -507,10 +506,10 @@ passwordChanged: "Contraseña cambiada exitosamente"
         confirmPassword: "Passwort bestätigen",
         twoFactor: "Zwei-Faktor-Authentifizierung"
       },
-      messages: {
+messages: {
         saveSuccess: "Einstellungen erfolgreich gespeichert",
         passwordChanged: "Passwort erfolgreich geändert"
-}
+      }
     }
   },
   it: {
@@ -642,12 +641,11 @@ passwordChanged: "Contraseña cambiada exitosamente"
         confirmPassword: "Conferma Password",
         twoFactor: "Autenticazione a Due Fattori"
       },
-      messages: {
+messages: {
         saveSuccess: "Impostazioni salvate con successo",
         passwordChanged: "Password cambiata con successo"
-}
+      }
     }
-  }
 }
 };
 
