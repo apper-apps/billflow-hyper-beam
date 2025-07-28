@@ -11,6 +11,7 @@ const navigation = [
     { name: "Bills", href: "/bills", icon: "FileText" },
     { name: "Quotations", href: "/quotations", icon: "Quote" },
     { name: "Payments", href: "/payments", icon: "CreditCard" },
+    { name: "Settings", href: "/settings", icon: "Settings" },
   ];
 
   return (

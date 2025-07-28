@@ -1,0 +1,27 @@
+{
+  "Id": 1,
+  "company": {
+    "name": "Your Agency Name",
+    "email": "admin@youragency.com",
+    "phone": "+1 (555) 123-4567",
+    "address": "123 Business St\nSuite 100\nCity, State 12345",
+    "website": "https://www.youragency.com",
+    "taxId": "12-3456789"
+  },
+  "preferences": {
+    "currency": "USD",
+    "language": "en",
+    "timezone": "America/New_York",
+    "dateFormat": "MM/DD/YYYY",
+    "notifications": {
+      "email": true,
+      "push": true,
+      "sms": false
+    }
+  },
+  "security": {
+    "twoFactorEnabled": false,
+    "lastPasswordChange": "2024-01-15T10:30:00Z",
+    "sessionTimeout": 480
+  }
+}

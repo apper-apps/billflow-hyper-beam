@@ -5,7 +5,7 @@ import Header from "@/components/organisms/Header";
 
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation();
+const location = useLocation();
   
   const getPageTitle = () => {
     const path = location.pathname;
@@ -14,6 +14,8 @@ const Layout = () => {
     if (path.startsWith("/bills")) return "Bills";
     if (path.startsWith("/quotations")) return "Quotations";
     if (path.startsWith("/payments")) return "Payments";
+    if (path.startsWith("/services")) return "Services";
+    if (path.startsWith("/settings")) return "Settings";
     return "BillFlow Pro";
   };
 
