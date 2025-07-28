@@ -209,10 +209,8 @@ const { t } = useContext(LanguageContext);
     state: "",
     country: "",
     paymentTerms: 30
-  });
+});
   const [loading, setLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
