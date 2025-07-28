@@ -1,0 +1,56 @@
+[
+  {
+    "Id": 1,
+    "clientId": 1,
+    "items": [
+      {
+        "description": "Website Redesign",
+        "quantity": 1,
+        "rate": 7500,
+        "amount": 7500
+      },
+      {
+        "description": "Mobile Optimization",
+        "quantity": 1,
+        "rate": 2000,
+        "amount": 2000
+      }
+    ],
+    "total": 9500,
+    "validUntil": "2024-06-30T00:00:00Z",
+    "status": "sent",
+    "createdAt": "2024-04-20T14:00:00Z"
+  },
+  {
+    "Id": 2,
+    "clientId": 3,
+    "items": [
+      {
+        "description": "Marketing Campaign",
+        "quantity": 1,
+        "rate": 5000,
+        "amount": 5000
+      }
+    ],
+    "total": 5000,
+    "validUntil": "2024-05-31T00:00:00Z",
+    "status": "accepted",
+    "createdAt": "2024-04-10T11:20:00Z"
+  },
+  {
+    "Id": 3,
+    "clientId": 4,
+    "items": [
+      {
+        "description": "Custom Software Development",
+        "quantity": 1,
+        "rate": 15000,
+        "amount": 15000
+      }
+    ],
+    "total": 15000,
+    "validUntil": "2024-07-15T00:00:00Z",
+    "status": "draft",
+    "createdAt": "2024-04-25T16:45:00Z"
+  }
+]

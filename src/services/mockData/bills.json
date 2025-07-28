@@ -1,0 +1,105 @@
+[
+  {
+    "Id": 1,
+    "clientId": 1,
+    "billNumber": "BILL-2024-001",
+    "items": [
+      {
+        "description": "Website Development",
+        "quantity": 1,
+        "rate": 5000,
+        "amount": 5000
+      },
+      {
+        "description": "SEO Optimization",
+        "quantity": 1,
+        "rate": 1500,
+        "amount": 1500
+      }
+    ],
+    "total": 6500,
+    "status": "paid",
+    "dueDate": "2024-04-15T00:00:00Z",
+    "createdAt": "2024-03-15T10:00:00Z"
+  },
+  {
+    "Id": 2,
+    "clientId": 2,
+    "billNumber": "BILL-2024-002",
+    "items": [
+      {
+        "description": "Social Media Management",
+        "quantity": 1,
+        "rate": 2500,
+        "amount": 2500
+      },
+      {
+        "description": "Content Creation",
+        "quantity": 10,
+        "rate": 150,
+        "amount": 1500
+      }
+    ],
+    "total": 4000,
+    "status": "pending",
+    "dueDate": "2024-04-30T00:00:00Z",
+    "createdAt": "2024-04-01T14:30:00Z"
+  },
+  {
+    "Id": 3,
+    "clientId": 3,
+    "billNumber": "BILL-2024-003",
+    "items": [
+      {
+        "description": "Brand Identity Design",
+        "quantity": 1,
+        "rate": 3500,
+        "amount": 3500
+      }
+    ],
+    "total": 3500,
+    "status": "overdue",
+    "dueDate": "2024-03-30T00:00:00Z",
+    "createdAt": "2024-03-01T09:15:00Z"
+  },
+  {
+    "Id": 4,
+    "clientId": 4,
+    "billNumber": "BILL-2024-004",
+    "items": [
+      {
+        "description": "E-commerce Platform",
+        "quantity": 1,
+        "rate": 8000,
+        "amount": 8000
+      },
+      {
+        "description": "Payment Integration",
+        "quantity": 1,
+        "rate": 1200,
+        "amount": 1200
+      }
+    ],
+    "total": 9200,
+    "status": "pending",
+    "dueDate": "2024-05-15T00:00:00Z",
+    "createdAt": "2024-04-15T11:45:00Z"
+  },
+  {
+    "Id": 5,
+    "clientId": 5,
+    "billNumber": "BILL-2024-005",
+    "items": [
+      {
+        "description": "Mobile App Development",
+        "quantity": 1,
+        "rate": 12000,
+        "amount": 12000
+      }
+    ],
+    "total": 12000,
+    "status": "pending",
+    "dueDate": "2024-05-30T00:00:00Z",
+    "createdAt": "2024-04-30T13:20:00Z"
+  }
+]

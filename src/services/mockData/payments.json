@@ -1,0 +1,18 @@
+[
+  {
+    "Id": 1,
+    "billId": 1,
+    "amount": 6500,
+    "method": "Bank Transfer",
+    "date": "2024-04-10T15:30:00Z",
+    "notes": "Payment received via wire transfer"
+  },
+  {
+    "Id": 2,
+    "billId": 2,
+    "amount": 2000,
+    "method": "Cash",
+    "date": "2024-04-05T10:15:00Z",
+    "notes": "Partial payment received in cash"
+  }
+]
