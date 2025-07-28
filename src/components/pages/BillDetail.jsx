@@ -295,22 +295,49 @@ const RecordPaymentModal = ({ bill, onClose, onSuccess }) => {
   const [formData, setFormData] = useState({
     amount: bill.total,
     method: "Cash",
+    gateway: "manual",
     notes: ""
   });
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      await paymentService.create({
-        billId: bill.Id,
-        ...formData
-      });
-      toast.success("Payment recorded successfully");
+      
+      if (formData.gateway === "paystack" || formData.gateway === "flutterwave") {
+        // Process payment through gateway
+        const paymentResult = formData.gateway === "paystack" 
+          ? await paymentService.processPaystackPayment({
+              amount: formData.amount,
+              email: "client@example.com"
+            })
+          : await paymentService.processFlutterwavePayment({
+              amount: formData.amount,
+              email: "client@example.com"
+            });
+
+        // Record the payment
+        await paymentService.create({
+          billId: bill.Id,
+          ...formData,
+          transactionId: paymentResult.transactionId,
+          gateway: paymentResult.gateway
+        });
+        
+        toast.success(`Payment processed successfully via ${formData.gateway}`);
+      } else {
+        // Manual payment recording
+        await paymentService.create({
+          billId: bill.Id,
+          ...formData
+        });
+        toast.success("Payment recorded successfully");
+      }
+      
       onSuccess();
     } catch (err) {
-      toast.error("Failed to record payment");
+      toast.error(err.message || "Failed to process payment");
     } finally {
       setLoading(false);
     }
@@ -352,6 +379,23 @@ const RecordPaymentModal = ({ bill, onClose, onSuccess }) => {
             />
           </div>
 
+{/* Payment Gateway */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Payment Gateway
+            </label>
+            <select
+              name="gateway"
+              value={formData.gateway}
+              onChange={handleChange}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            >
+              <option value="manual">Manual/Traditional</option>
+              <option value="paystack">Paystack</option>
+              <option value="flutterwave">Flutterwave</option>
+            </select>
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Payment Method
@@ -367,6 +411,8 @@ const RecordPaymentModal = ({ bill, onClose, onSuccess }) => {
               <option value="Check">Check</option>
               <option value="Credit Card">Credit Card</option>
               <option value="PayPal">PayPal</option>
+              <option value="Paystack">Paystack</option>
+              <option value="Flutterwave">Flutterwave</option>
             </select>
           </div>
 

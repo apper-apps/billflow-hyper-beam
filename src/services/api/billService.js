@@ -59,7 +59,7 @@ export const billService = {
     return true;
   },
 
-  async markAsPaid(id) {
+async markAsPaid(id) {
     await delay(300);
     const index = bills.findIndex(b => b.Id === parseInt(id));
     if (index === -1) {
@@ -67,5 +67,48 @@ export const billService = {
     }
     bills[index].status = "paid";
     return { ...bills[index] };
+  },
+
+  async processPayment(id, paymentData) {
+    await delay(500);
+    const { gateway, amount, method } = paymentData;
+    
+    // Simulate payment processing
+    if (gateway === "paystack") {
+      // Simulate Paystack API call
+      const success = Math.random() > 0.1; // 90% success rate
+      if (!success) {
+        throw new Error("Paystack payment failed - insufficient funds");
+      }
+      return {
+        success: true,
+        transactionId: `ps_${Date.now()}`,
+        gateway: "paystack",
+        amount,
+        method
+      };
+    } else if (gateway === "flutterwave") {
+      // Simulate Flutterwave API call
+      const success = Math.random() > 0.15; // 85% success rate
+      if (!success) {
+        throw new Error("Flutterwave payment failed - transaction declined");
+      }
+      return {
+        success: true,
+        transactionId: `flw_${Date.now()}`,
+        gateway: "flutterwave", 
+        amount,
+        method
+      };
+    } else {
+      // Traditional payment method
+      return {
+        success: true,
+        transactionId: `manual_${Date.now()}`,
+        gateway: "manual",
+        amount,
+        method
+      };
+    }
   }
 };

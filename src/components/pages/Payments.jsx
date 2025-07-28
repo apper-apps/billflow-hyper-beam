@@ -92,13 +92,15 @@ const Payments = () => {
     };
   };
 
-  const getMethodIcon = (method) => {
+const getMethodIcon = (method) => {
     switch (method) {
       case "Cash": return "Banknote";
       case "Bank Transfer": return "CreditCard";
       case "Check": return "FileText";
       case "Credit Card": return "CreditCard";
       case "PayPal": return "Wallet";
+      case "Paystack": return "Zap";
+      case "Flutterwave": return "Zap";
       default: return "DollarSign";
     }
   };

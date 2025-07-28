@@ -52,7 +52,61 @@ export const paymentService = {
     if (index === -1) {
       throw new Error("Payment not found");
     }
-    payments.splice(index, 1);
+payments.splice(index, 1);
     return true;
+  },
+
+  async processPaystackPayment(paymentData) {
+    await delay(800);
+    const { amount, email, currency = "USD" } = paymentData;
+    
+    // Simulate Paystack payment processing
+    const success = Math.random() > 0.1; // 90% success rate
+    if (!success) {
+      throw new Error("Paystack payment failed");
+    }
+
+    return {
+      success: true,
+      transactionId: `ps_${Date.now()}`,
+      reference: `ps_ref_${Date.now()}`,
+      gateway: "paystack",
+      amount,
+      currency,
+      status: "success"
+    };
+  },
+
+  async processFlutterwavePayment(paymentData) {
+    await delay(700);
+    const { amount, email, currency = "USD" } = paymentData;
+    
+    // Simulate Flutterwave payment processing
+    const success = Math.random() > 0.15; // 85% success rate
+    if (!success) {
+      throw new Error("Flutterwave payment failed");
+    }
+
+    return {
+      success: true,
+      transactionId: `flw_${Date.now()}`,
+      reference: `flw_ref_${Date.now()}`,
+      gateway: "flutterwave",
+      amount,
+      currency,
+      status: "success"
+    };
+  },
+
+  async verifyPayment(transactionId, gateway) {
+    await delay(300);
+    
+    // Simulate payment verification
+    return {
+      verified: true,
+      transactionId,
+      gateway,
+      status: "success"
+    };
   }
 };

@@ -11,6 +11,9 @@ import CreateBill from "@/components/pages/CreateBill";
 import Quotations from "@/components/pages/Quotations";
 import CreateQuotation from "@/components/pages/CreateQuotation";
 import Payments from "@/components/pages/Payments";
+import Services from "@/components/pages/Services";
+import CreateService from "@/components/pages/CreateService";
+import ServiceDetail from "@/components/pages/ServiceDetail";
 
 function App() {
   return (
@@ -25,6 +28,9 @@ function App() {
           <Route path="bills/:id" element={<BillDetail />} />
           <Route path="quotations" element={<Quotations />} />
           <Route path="quotations/create" element={<CreateQuotation />} />
+<Route path="services" element={<Services />} />
+          <Route path="services/create" element={<CreateService />} />
+          <Route path="services/:id" element={<ServiceDetail />} />
           <Route path="payments" element={<Payments />} />
         </Route>
       </Routes>

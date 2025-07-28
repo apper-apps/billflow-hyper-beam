@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { addDays } from "date-fns";
-import Card from "@/components/atoms/Card";
-import Button from "@/components/atoms/Button";
+import { serviceService } from "@/services/api/serviceService";
+import { billService } from "@/services/api/billService";
+import { clientService } from "@/services/api/clientService";
 import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
-import { billService } from "@/services/api/billService";
-import { clientService } from "@/services/api/clientService";
-
+import Button from "@/components/atoms/Button";
+import Select from "@/components/atoms/Select";
+import Card from "@/components/atoms/Card";
 const CreateBill = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const preselectedClientId = searchParams.get("client");
   
-  const [clients, setClients] = useState([]);
+const [clients, setClients] = useState([]);
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -24,26 +26,30 @@ const CreateBill = () => {
     clientId: preselectedClientId ? parseInt(preselectedClientId) : "",
     dueDate: addDays(new Date(), 30).toISOString().split("T")[0],
     items: [
-      { description: "", quantity: 1, rate: 0, amount: 0 }
+      { description: "", quantity: 1, rate: 0, amount: 0, serviceId: "" }
     ]
   });
 
-  const loadClients = async () => {
+const loadData = async () => {
     try {
       setLoading(true);
       setError("");
-      const clientsData = await clientService.getAll();
+      const [clientsData, servicesData] = await Promise.all([
+        clientService.getAll(),
+        serviceService.getActive()
+      ]);
       setClients(clientsData);
+      setServices(servicesData);
     } catch (err) {
       setError(err.message);
-      toast.error("Failed to load clients");
+      toast.error("Failed to load data");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadClients();
+    loadData();
   }, []);
 
   const handleClientChange = (e) => {
@@ -59,9 +65,22 @@ const CreateBill = () => {
     }));
   };
 
-  const handleItemChange = (index, field, value) => {
+const handleItemChange = (index, field, value) => {
     const newItems = [...formData.items];
     newItems[index] = { ...newItems[index], [field]: value };
+    
+    // Auto-populate from service selection
+    if (field === "serviceId" && value) {
+      const selectedService = services.find(s => s.Id === parseInt(value));
+      if (selectedService) {
+        newItems[index] = {
+          ...newItems[index],
+          description: selectedService.name,
+          rate: selectedService.price,
+          amount: newItems[index].quantity * selectedService.price
+        };
+      }
+    }
     
     // Recalculate amount if quantity or rate changed
     if (field === "quantity" || field === "rate") {
@@ -74,7 +93,7 @@ const CreateBill = () => {
   const addItem = () => {
     setFormData(prev => ({
       ...prev,
-      items: [...prev.items, { description: "", quantity: 1, rate: 0, amount: 0 }]
+      items: [...prev.items, { description: "", quantity: 1, rate: 0, amount: 0, serviceId: "" }]
     }));
   };
 
@@ -120,9 +139,8 @@ const CreateBill = () => {
       setSubmitting(false);
     }
   };
-
-  if (loading) return <Loading type="cards" count={3} />;
-  if (error) return <Error message={error} onRetry={loadClients} />;
+if (loading) return <Loading type="cards" count={3} />;
+  if (error) return <Error message={error} onRetry={loadData} />;
 
   const selectedClient = clients.find(c => c.Id === formData.clientId);
 
@@ -210,8 +228,26 @@ const CreateBill = () => {
 
           <div className="space-y-4">
             {formData.items.map((item, index) => (
-              <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
-                <div className="md:col-span-5">
+<div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
+                <div className="md:col-span-3">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Service (Optional)
+                  </label>
+                  <select
+                    value={item.serviceId}
+                    onChange={(e) => handleItemChange(index, "serviceId", e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  >
+                    <option value="">Select a service...</option>
+                    {services.map(service => (
+                      <option key={service.Id} value={service.Id}>
+                        {service.name} - ${service.price}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="md:col-span-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Description
                   </label>
