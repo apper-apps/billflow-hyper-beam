@@ -22,7 +22,8 @@ const [settings, setSettings] = useState({
     company: {
       name: "",
       email: "",
-      phone: "",
+phone: "",
+      address: "",
       city: "",
       state: "",
       country: "",
@@ -223,7 +224,7 @@ const handleCompanyChange = (field, value) => {
               type="tel"
               label={t('settings.company.phone')}
               value={settings.company.phone}
-              onChange={(e) => handleCompanyChange('phone', e.target.value)}
+onChange={(e) => handleCompanyChange('phone', e.target.value)}
             />
             <FormField
               label={t('settings.company.website')}
@@ -237,25 +238,34 @@ const handleCompanyChange = (field, value) => {
               onChange={(e) => handleCompanyChange('taxId', e.target.value)}
             />
           </div>
+
+          <div>
+            <FormField
+              label={t('settings.company.address')}
+              value={settings.company.address}
+              onChange={(e) => handleCompanyChange('address', e.target.value)}
+              placeholder={t('clients.form.addressPlaceholder')}
+            />
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FormField
-              label="City"
+              label={t('settings.company.city')}
               value={settings.company.city}
               onChange={(e) => handleCompanyChange('city', e.target.value)}
-              placeholder="Enter city"
+              placeholder={t('clients.form.cityPlaceholder')}
             />
             <FormField
-              label="State"
+              label={t('settings.company.state')}
               value={settings.company.state}
               onChange={(e) => handleCompanyChange('state', e.target.value)}
-              placeholder="Enter state"
+              placeholder={t('clients.form.statePlaceholder')}
             />
             <FormField
-              label="Country"
+              label={t('settings.company.country')}
               value={settings.company.country}
               onChange={(e) => handleCompanyChange('country', e.target.value)}
-              placeholder="Enter country"
+              placeholder={t('clients.form.countryPlaceholder')}
             />
           </div>
 

@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
+import { LanguageContext } from "@/contexts/LanguageContext";
 import { NavLink } from "react-router-dom";
 import ApperIcon from "@/components/ApperIcon";
 import { cn } from "@/utils/cn";
 
 const Sidebar = ({ isOpen, onClose }) => {
-const navigation = [
-    { name: "Dashboard", href: "/", icon: "BarChart3" },
-    { name: "Clients", href: "/clients", icon: "Users" },
-    { name: "Services", href: "/services", icon: "Package" },
-    { name: "Bills", href: "/bills", icon: "FileText" },
-    { name: "Quotations", href: "/quotations", icon: "Quote" },
-    { name: "Payments", href: "/payments", icon: "CreditCard" },
-    { name: "Settings", href: "/settings", icon: "Settings" },
+const { t } = useContext(LanguageContext);
+
+  const navigation = [
+    { name: t('navigation.dashboard'), href: "/", icon: "BarChart3" },
+    { name: t('navigation.clients'), href: "/clients", icon: "Users" },
+    { name: t('navigation.services'), href: "/services", icon: "Package" },
+    { name: t('navigation.bills'), href: "/bills", icon: "FileText" },
+    { name: t('navigation.quotations'), href: "/quotations", icon: "Quote" },
+    { name: t('navigation.payments'), href: "/payments", icon: "CreditCard" },
+    { name: t('navigation.settings'), href: "/settings", icon: "Settings" },
   ];
 
   return (

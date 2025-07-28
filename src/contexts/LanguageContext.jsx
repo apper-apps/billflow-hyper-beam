@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 const translations = {
   en: {
@@ -107,430 +107,548 @@ const translations = {
       }
     }
   },
-  es: {
+es: {
     common: {
       save: "Guardar",
       cancel: "Cancelar",
-      update: "Actualizar",
-      saving: "Guardando...",
+      delete: "Eliminar",
+      edit: "Editar",
+      add: "Agregar",
+      search: "Buscar",
+      filter: "Filtrar",
+      actions: "Acciones",
       loading: "Cargando...",
       error: "Error",
       success: "Éxito",
-      days: "días",
-      create: "Crear",
-      edit: "Editar",
-      delete: "Eliminar",
-      search: "Buscar",
-      add: "Agregar"
+      confirmation: "Confirmación",
+      yes: "Sí",
+      no: "No",
+      close: "Cerrar",
+      view: "Ver",
+      details: "Detalles",
+      status: "Estado",
+      date: "Fecha",
+      amount: "Cantidad",
+      total: "Total",
+      subtotal: "Subtotal",
+      tax: "Impuesto",
+      discount: "Descuento",
+      paid: "Pagado",
+      pending: "Pendiente",
+      overdue: "Vencido",
+      draft: "Borrador"
     },
     navigation: {
       dashboard: "Panel",
       clients: "Clientes",
-      services: "Servicios",
-      quotations: "Cotizaciones",
+      services: "Servicios", 
       bills: "Facturas",
+      quotations: "Cotizaciones",
       payments: "Pagos",
       settings: "Configuración"
     },
+    auth: {
+      login: "Iniciar Sesión",
+      logout: "Cerrar Sesión",
+      email: "Correo Electrónico",
+      password: "Contraseña",
+      emailPlaceholder: "Ingresa tu correo",
+      passwordPlaceholder: "Ingresa tu contraseña",
+      loginSubtitle: "Accede a tu panel de facturación",
+      loginSuccess: "Sesión iniciada correctamente",
+      loginError: "Credenciales inválidas",
+      loggingIn: "Iniciando sesión...",
+      demoCredentials: "Credenciales de demostración:"
+    },
+    dashboard: {
+      title: "Panel de Control",
+      totalRevenue: "Ingresos Totales",
+      pendingInvoices: "Facturas Pendientes",
+      paidInvoices: "Facturas Pagadas",
+      totalClients: "Total de Clientes",
+      recentBills: "Facturas Recientes",
+      recentPayments: "Pagos Recientes",
+      viewAll: "Ver Todo"
+    },
     clients: {
       title: "Clientes",
-      subtitle: "Gestiona las relaciones con tus clientes y el historial de pagos",
-      empty: {
-        title: "No hay clientes aún",
-        description: "Comienza a construir tu base de clientes agregando tu primer cliente.",
-        action: "Agregar Cliente"
-      },
-      actions: {
-        add: "Agregar Cliente",
-        edit: "Editar Cliente",
-        delete: "Eliminar Cliente"
-      },
-      search: {
-        placeholder: "Buscar clientes..."
-      },
-      card: {
-        paymentTerms: "Términos de Pago",
-        totalBilled: "Total Facturado",
-        paidAmount: "Monto Pagado",
-        pending: "Pendiente",
-        overdue: "Vencido",
-        added: "Agregado",
-        bills: "facturas"
-      },
-      modal: {
-        title: "Agregar Nuevo Cliente",
-        create: "Crear Cliente",
-        creating: "Creando..."
-      },
+      addClient: "Agregar Cliente",
+      clientName: "Nombre del Cliente",
+      email: "Correo Electrónico",
+      phone: "Teléfono",
+      totalBilled: "Total Facturado",
+      paidAmount: "Cantidad Pagada",
+      pendingAmount: "Cantidad Pendiente",
+      overdueAmount: "Cantidad Vencida",
+      paymentTerms: "Términos de Pago",
+      createdAt: "Fecha de Creación",
       form: {
-        name: "Nombre de la Empresa",
-        email: "Email",
+        name: "Nombre",
+        namePlaceholder: "Ingresa el nombre del cliente",
+        email: "Correo Electrónico",
+        emailPlaceholder: "Ingresa el correo electrónico",
         phone: "Teléfono",
+        phonePlaceholder: "Ingresa el número de teléfono",
         address: "Dirección",
-        addressPlaceholder: "Ingrese la dirección completa",
+        addressPlaceholder: "Ingresa la dirección",
         city: "Ciudad",
-        cityPlaceholder: "Ingrese ciudad",
+        cityPlaceholder: "Ingresa la ciudad",
         state: "Estado",
-        statePlaceholder: "Ingrese estado",
+        statePlaceholder: "Ingresa el estado",
         country: "País",
-        countryPlaceholder: "Seleccionar país",
-        paymentTerms: "Términos de Pago (días)"
+        countryPlaceholder: "Selecciona el país",
+        paymentTerms: "Términos de Pago (días)",
+        paymentTermsPlaceholder: "30"
+      },
+      messages: {
+        createSuccess: "Cliente creado exitosamente",
+        updateSuccess: "Cliente actualizado exitosamente",
+        deleteSuccess: "Cliente eliminado exitosamente",
+        deleteConfirm: "¿Estás seguro de que quieres eliminar este cliente?"
       }
     },
     settings: {
+      title: "Configuración",
       company: {
         title: "Información de la Empresa",
         name: "Nombre de la Empresa",
-        email: "Dirección de Email",
-        phone: "Número de Teléfono",
+        email: "Correo Electrónico",
+        phone: "Teléfono",
         address: "Dirección",
+        city: "Ciudad",
+        state: "Estado",
+        country: "País",
         website: "Sitio Web",
-        taxId: "ID Fiscal",
-        saved: "Información de la empresa guardada exitosamente",
-        error: "Error al guardar la información de la empresa"
-      },
-      security: {
-        title: "Configuración de Seguridad",
-        updateEmail: "Actualizar Dirección de Email",
-        newEmail: "Nueva Dirección de Email",
-        changePassword: "Cambiar Contraseña",
-        currentPassword: "Contraseña Actual",
-        newPassword: "Nueva Contraseña",
-        confirmPassword: "Confirmar Nueva Contraseña",
-        passwordMismatch: "Las contraseñas no coinciden",
-        passwordTooShort: "La contraseña debe tener al menos 8 caracteres",
-        passwordChanged: "Contraseña cambiada exitosamente",
-        passwordError: "Error al cambiar la contraseña",
-        emailUpdated: "Email actualizado exitosamente",
-        emailError: "Error al actualizar el email"
+        taxId: "ID Fiscal"
       },
       preferences: {
         title: "Preferencias",
-        currency: "Moneda Predeterminada",
         language: "Idioma",
-        saved: "Preferencias guardadas exitosamente",
-        error: "Error al guardar las preferencias"
+        currency: "Moneda",
+        timezone: "Zona Horaria",
+        dateFormat: "Formato de Fecha"
+      },
+      security: {
+        title: "Seguridad",
+        changePassword: "Cambiar Contraseña",
+        currentPassword: "Contraseña Actual",
+        newPassword: "Nueva Contraseña",
+        confirmPassword: "Confirmar Contraseña",
+        twoFactor: "Autenticación de Dos Factores"
+      },
+      messages: {
+        saveSuccess: "Configuración guardada exitosamente",
+        passwordChanged: "Contraseña cambiada exitosamente"
+passwordChanged: "Contraseña cambiada exitosamente"
       }
     }
   },
   fr: {
     common: {
       save: "Enregistrer",
-      cancel: "Annuler",
-      update: "Mettre à jour",
-      saving: "Enregistrement...",
+      cancel: "Annuler", 
+      delete: "Supprimer",
+      edit: "Modifier",
+      add: "Ajouter",
+      search: "Rechercher",
+      filter: "Filtrer",
+      actions: "Actions",
       loading: "Chargement...",
       error: "Erreur",
       success: "Succès",
-      days: "jours",
-      create: "Créer",
-      edit: "Modifier",
-      delete: "Supprimer",
-      search: "Rechercher",
-      add: "Ajouter"
+      confirmation: "Confirmation",
+      yes: "Oui",
+      no: "Non",
+      close: "Fermer",
+      view: "Voir",
+      details: "Détails",
+      status: "Statut",
+      date: "Date",
+      amount: "Montant",
+      total: "Total",
+      subtotal: "Sous-total",
+      tax: "Taxe",
+      discount: "Remise",
+      paid: "Payé",
+      pending: "En attente",
+      overdue: "En retard",
+      draft: "Brouillon"
     },
     navigation: {
       dashboard: "Tableau de bord",
       clients: "Clients",
       services: "Services",
-      quotations: "Devis",
       bills: "Factures",
+      quotations: "Devis",
       payments: "Paiements",
       settings: "Paramètres"
     },
+    auth: {
+      login: "Se connecter",
+      logout: "Se déconnecter",
+      email: "E-mail",
+      password: "Mot de passe",
+      emailPlaceholder: "Entrez votre e-mail",
+      passwordPlaceholder: "Entrez votre mot de passe",
+      loginSubtitle: "Accédez à votre panneau de facturation",
+      loginSuccess: "Connexion réussie",
+      loginError: "Identifiants invalides",
+      loggingIn: "Connexion en cours...",
+      demoCredentials: "Identifiants de démonstration:"
+    },
+    dashboard: {
+      title: "Tableau de bord",
+      totalRevenue: "Revenus totaux",
+      pendingInvoices: "Factures en attente",
+      paidInvoices: "Factures payées",
+      totalClients: "Total des clients",
+      recentBills: "Factures récentes",
+      recentPayments: "Paiements récents",
+      viewAll: "Voir tout"
+    },
     clients: {
       title: "Clients",
-      subtitle: "Gérez vos relations clients et l'historique des paiements",
-      empty: {
-        title: "Aucun client pour le moment",
-        description: "Commencez à construire votre base de clients en ajoutant votre premier client.",
-        action: "Ajouter un Client"
-      },
-      actions: {
-        add: "Ajouter un Client",
-        edit: "Modifier le Client",
-        delete: "Supprimer le Client"
-      },
-      search: {
-        placeholder: "Rechercher des clients..."
-      },
-      card: {
-        paymentTerms: "Conditions de Paiement",
-        totalBilled: "Total Facturé",
-        paidAmount: "Montant Payé",
-        pending: "En attente",
-        overdue: "En retard",
-        added: "Ajouté",
-        bills: "factures"
-      },
-      modal: {
-        title: "Ajouter un Nouveau Client",
-        create: "Créer le Client",
-        creating: "Création..."
-      },
+      addClient: "Ajouter un client",
+      clientName: "Nom du client",
+      email: "E-mail",
+      phone: "Téléphone",
+      totalBilled: "Total facturé",
+      paidAmount: "Montant payé",
+      pendingAmount: "Montant en attente",
+      overdueAmount: "Montant en retard",
+      paymentTerms: "Conditions de paiement",
+      createdAt: "Date de création",
       form: {
-        name: "Nom de l'Entreprise",
-        email: "Email",
+        name: "Nom",
+        namePlaceholder: "Entrez le nom du client",
+        email: "E-mail",
+        emailPlaceholder: "Entrez l'e-mail",
         phone: "Téléphone",
+        phonePlaceholder: "Entrez le numéro de téléphone",
         address: "Adresse",
-        addressPlaceholder: "Saisir l'adresse complète",
+        addressPlaceholder: "Entrez l'adresse",
         city: "Ville",
-        cityPlaceholder: "Saisir la ville",
+        cityPlaceholder: "Entrez la ville",
         state: "État",
-        statePlaceholder: "Saisir l'état",
+        statePlaceholder: "Entrez l'état",
         country: "Pays",
-        countryPlaceholder: "Sélectionner le pays",
-        paymentTerms: "Conditions de Paiement (jours)"
+        countryPlaceholder: "Sélectionnez le pays",
+        paymentTerms: "Conditions de paiement (jours)",
+        paymentTermsPlaceholder: "30"
+      },
+      messages: {
+        createSuccess: "Client créé avec succès",
+        updateSuccess: "Client mis à jour avec succès",
+        deleteSuccess: "Client supprimé avec succès",
+        deleteConfirm: "Êtes-vous sûr de vouloir supprimer ce client?"
       }
     },
     settings: {
+      title: "Paramètres",
       company: {
-        title: "Informations sur l'Entreprise",
-        name: "Nom de l'Entreprise",
-        email: "Adresse Email",
-        phone: "Numéro de Téléphone",
+        title: "Informations sur l'entreprise",
+        name: "Nom de l'entreprise",
+        email: "E-mail",
+        phone: "Téléphone",
         address: "Adresse",
-        website: "Site Web",
-        taxId: "Numéro Fiscal",
-        saved: "Informations de l'entreprise enregistrées avec succès",
-        error: "Échec de l'enregistrement des informations de l'entreprise"
-      },
-      security: {
-        title: "Paramètres de Sécurité",
-        updateEmail: "Mettre à jour l'Adresse Email",
-        newEmail: "Nouvelle Adresse Email",
-        changePassword: "Changer le Mot de Passe",
-        currentPassword: "Mot de Passe Actuel",
-        newPassword: "Nouveau Mot de Passe",
-        confirmPassword: "Confirmer le Nouveau Mot de Passe",
-        passwordMismatch: "Les mots de passe ne correspondent pas",
-        passwordTooShort: "Le mot de passe doit contenir au moins 8 caractères",
-        passwordChanged: "Mot de passe changé avec succès",
-        passwordError: "Échec du changement de mot de passe",
-        emailUpdated: "Email mis à jour avec succès",
-        emailError: "Échec de la mise à jour de l'email"
+        city: "Ville",
+        state: "État",
+        country: "Pays",
+        website: "Site web",
+        taxId: "ID fiscal"
       },
       preferences: {
         title: "Préférences",
-        currency: "Devise par Défaut",
         language: "Langue",
-        saved: "Préférences enregistrées avec succès",
-        error: "Échec de l'enregistrement des préférences"
-      }
+        currency: "Devise",
+        timezone: "Fuseau horaire",
+        dateFormat: "Format de date"
+      },
+      security: {
+        title: "Sécurité",
+        changePassword: "Changer le mot de passe",
+        currentPassword: "Mot de passe actuel",
+        newPassword: "Nouveau mot de passe",
+        confirmPassword: "Confirmer le mot de passe",
+        twoFactor: "Authentification à deux facteurs"
+      },
+      messages: {
+        saveSuccess: "Paramètres enregistrés avec succès",
+        passwordChanged: "Mot de passe changé avec succès"
+}
     }
   },
   de: {
     common: {
       save: "Speichern",
       cancel: "Abbrechen",
-      update: "Aktualisieren",
-      saving: "Speichere...",
-      loading: "Lade...",
+      delete: "Löschen",
+      edit: "Bearbeiten",
+      add: "Hinzufügen",
+      search: "Suchen",
+      filter: "Filtern",
+      actions: "Aktionen",
+      loading: "Laden...",
       error: "Fehler",
       success: "Erfolg",
-      days: "Tage",
-      create: "Erstellen",
-      edit: "Bearbeiten",
-      delete: "Löschen",
-      search: "Suchen",
-      add: "Hinzufügen"
+      confirmation: "Bestätigung",
+      yes: "Ja",
+      no: "Nein",
+      close: "Schließen",
+      view: "Ansehen",
+      details: "Details",
+      status: "Status",
+      date: "Datum",
+      amount: "Betrag",
+      total: "Gesamt",
+      subtotal: "Zwischensumme",
+      tax: "Steuer",
+      discount: "Rabatt",
+      paid: "Bezahlt",
+      pending: "Ausstehend",
+      overdue: "Überfällig",
+      draft: "Entwurf"
     },
     navigation: {
       dashboard: "Dashboard",
       clients: "Kunden",
       services: "Dienstleistungen",
-      quotations: "Angebote",
       bills: "Rechnungen",
+      quotations: "Angebote",
       payments: "Zahlungen",
       settings: "Einstellungen"
     },
+    auth: {
+      login: "Anmelden",
+      logout: "Abmelden",
+      email: "E-Mail",
+      password: "Passwort",
+      emailPlaceholder: "E-Mail eingeben",
+      passwordPlaceholder: "Passwort eingeben",
+      loginSubtitle: "Zugang zu Ihrem Abrechnungspanel",
+      loginSuccess: "Erfolgreich angemeldet",
+      loginError: "Ungültige Anmeldedaten",
+      loggingIn: "Anmeldung läuft...",
+      demoCredentials: "Demo-Anmeldedaten:"
+    },
+    dashboard: {
+      title: "Dashboard",
+      totalRevenue: "Gesamtumsatz",
+      pendingInvoices: "Ausstehende Rechnungen",
+      paidInvoices: "Bezahlte Rechnungen",
+      totalClients: "Kunden insgesamt",
+      recentBills: "Aktuelle Rechnungen",
+      recentPayments: "Aktuelle Zahlungen",
+      viewAll: "Alle anzeigen"
+    },
     clients: {
       title: "Kunden",
-      subtitle: "Verwalten Sie Ihre Kundenbeziehungen und Zahlungshistorie",
-      empty: {
-        title: "Noch keine Kunden",
-        description: "Beginnen Sie mit dem Aufbau Ihrer Kundenbasis, indem Sie Ihren ersten Kunden hinzufügen.",
-        action: "Kunde Hinzufügen"
-      },
-      actions: {
-        add: "Kunde Hinzufügen",
-        edit: "Kunde Bearbeiten",
-        delete: "Kunde Löschen"
-      },
-      search: {
-        placeholder: "Kunden suchen..."
-      },
-      card: {
-        paymentTerms: "Zahlungsbedingungen",
-        totalBilled: "Gesamt Berechnet",
-        paidAmount: "Bezahlter Betrag",
-        pending: "Ausstehend",
-        overdue: "Überfällig",
-        added: "Hinzugefügt",
-        bills: "rechnungen"
-      },
-      modal: {
-        title: "Neuen Kunden Hinzufügen",
-        create: "Kunde Erstellen",
-        creating: "Erstelle..."
-      },
+      addClient: "Kunde hinzufügen",
+      clientName: "Kundenname",
+      email: "E-Mail",
+      phone: "Telefon",
+      totalBilled: "Gesamtrechnung",
+      paidAmount: "Bezahlter Betrag",
+      pendingAmount: "Ausstehender Betrag",
+      overdueAmount: "Überfälliger Betrag",
+      paymentTerms: "Zahlungsbedingungen",
+      createdAt: "Erstellungsdatum",
       form: {
-        name: "Firmenname",
+        name: "Name",
+        namePlaceholder: "Kundenname eingeben",
         email: "E-Mail",
+        emailPlaceholder: "E-Mail eingeben",
         phone: "Telefon",
+        phonePlaceholder: "Telefonnummer eingeben",
         address: "Adresse",
-        addressPlaceholder: "Vollständige Adresse eingeben",
+        addressPlaceholder: "Adresse eingeben",
         city: "Stadt",
         cityPlaceholder: "Stadt eingeben",
         state: "Bundesland",
         statePlaceholder: "Bundesland eingeben",
         country: "Land",
         countryPlaceholder: "Land auswählen",
-        paymentTerms: "Zahlungsbedingungen (Tage)"
+        paymentTerms: "Zahlungsbedingungen (Tage)",
+        paymentTermsPlaceholder: "30"
+      },
+      messages: {
+        createSuccess: "Kunde erfolgreich erstellt",
+        updateSuccess: "Kunde erfolgreich aktualisiert",
+        deleteSuccess: "Kunde erfolgreich gelöscht",
+        deleteConfirm: "Sind Sie sicher, dass Sie diesen Kunden löschen möchten?"
       }
     },
     settings: {
+      title: "Einstellungen",
       company: {
         title: "Unternehmensinformationen",
-        name: "Firmenname",
-        email: "E-Mail-Adresse",
-        phone: "Telefonnummer",
+        name: "Unternehmensname",
+        email: "E-Mail",
+        phone: "Telefon",
         address: "Adresse",
+        city: "Stadt",
+        state: "Bundesland",
+        country: "Land",
         website: "Website",
-        taxId: "Steuer-ID",
-        saved: "Unternehmensinformationen erfolgreich gespeichert",
-        error: "Fehler beim Speichern der Unternehmensinformationen"
-      },
-      security: {
-        title: "Sicherheitseinstellungen",
-        updateEmail: "E-Mail-Adresse Aktualisieren",
-        newEmail: "Neue E-Mail-Adresse",
-        changePassword: "Passwort Ändern",
-        currentPassword: "Aktuelles Passwort",
-        newPassword: "Neues Passwort",
-        confirmPassword: "Neues Passwort Bestätigen",
-        passwordMismatch: "Passwörter stimmen nicht überein",
-        passwordTooShort: "Passwort muss mindestens 8 Zeichen lang sein",
-        passwordChanged: "Passwort erfolgreich geändert",
-        passwordError: "Fehler beim Ändern des Passworts",
-        emailUpdated: "E-Mail erfolgreich aktualisiert",
-        emailError: "Fehler beim Aktualisieren der E-Mail"
+        taxId: "Steuer-ID"
       },
       preferences: {
         title: "Einstellungen",
-        currency: "Standardwährung",
         language: "Sprache",
-        saved: "Einstellungen erfolgreich gespeichert",
-        error: "Fehler beim Speichern der Einstellungen"
-      }
+        currency: "Währung",
+        timezone: "Zeitzone",
+        dateFormat: "Datumsformat"
+      },
+      security: {
+        title: "Sicherheit",
+        changePassword: "Passwort ändern",
+        currentPassword: "Aktuelles Passwort",
+        newPassword: "Neues Passwort",
+        confirmPassword: "Passwort bestätigen",
+        twoFactor: "Zwei-Faktor-Authentifizierung"
+      },
+      messages: {
+        saveSuccess: "Einstellungen erfolgreich gespeichert",
+        passwordChanged: "Passwort erfolgreich geändert"
+}
     }
   },
   it: {
     common: {
       save: "Salva",
       cancel: "Annulla",
-      update: "Aggiorna",
-      saving: "Salvando...",
-      loading: "Caricando...",
+      delete: "Elimina", 
+      edit: "Modifica",
+      add: "Aggiungi",
+      search: "Cerca",
+      filter: "Filtra",
+      actions: "Azioni",
+      loading: "Caricamento...",
       error: "Errore",
       success: "Successo",
-      days: "giorni",
-      create: "Crea",
-      edit: "Modifica",
-      delete: "Elimina",
-      search: "Cerca",
-      add: "Aggiungi"
+      confirmation: "Conferma",
+      yes: "Sì",
+      no: "No",
+      close: "Chiudi",
+      view: "Visualizza",
+      details: "Dettagli",
+      status: "Stato",
+      date: "Data",
+      amount: "Importo",
+      total: "Totale",
+      subtotal: "Subtotale",
+      tax: "Tassa",
+      discount: "Sconto",
+      paid: "Pagato",
+      pending: "In attesa",
+      overdue: "Scaduto",
+      draft: "Bozza"
     },
     navigation: {
       dashboard: "Dashboard",
       clients: "Clienti",
       services: "Servizi",
-      quotations: "Preventivi",
       bills: "Fatture",
+      quotations: "Preventivi",
       payments: "Pagamenti",
       settings: "Impostazioni"
     },
+    auth: {
+      login: "Accedi",
+      logout: "Esci",
+      email: "Email",
+      password: "Password",
+      emailPlaceholder: "Inserisci la tua email",
+      passwordPlaceholder: "Inserisci la tua password",
+      loginSubtitle: "Accedi al tuo pannello di fatturazione",
+      loginSuccess: "Accesso effettuato con successo",
+      loginError: "Credenziali non valide",
+      loggingIn: "Accesso in corso...",
+      demoCredentials: "Credenziali demo:"
+    },
+    dashboard: {
+      title: "Dashboard",
+      totalRevenue: "Ricavi Totali",
+      pendingInvoices: "Fatture in Attesa",
+      paidInvoices: "Fatture Pagate",
+      totalClients: "Totale Clienti",
+      recentBills: "Fatture Recenti",
+      recentPayments: "Pagamenti Recenti",
+      viewAll: "Visualizza Tutto"
+    },
     clients: {
       title: "Clienti",
-      subtitle: "Gestisci le relazioni con i clienti e la cronologia dei pagamenti",
-      empty: {
-        title: "Nessun cliente ancora",
-        description: "Inizia a costruire la tua base clienti aggiungendo il tuo primo cliente.",
-        action: "Aggiungi Cliente"
-      },
-      actions: {
-        add: "Aggiungi Cliente",
-        edit: "Modifica Cliente",
-        delete: "Elimina Cliente"
-      },
-      search: {
-        placeholder: "Cerca clienti..."
-      },
-      card: {
-        paymentTerms: "Termini di Pagamento",
-        totalBilled: "Totale Fatturato",
-        paidAmount: "Importo Pagato",
-        pending: "In sospeso",
-        overdue: "Scaduto",
-        added: "Aggiunto",
-        bills: "fatture"
-      },
-      modal: {
-        title: "Aggiungi Nuovo Cliente",
-        create: "Crea Cliente",
-        creating: "Creando..."
-      },
+      addClient: "Aggiungi Cliente",
+      clientName: "Nome Cliente",
+      email: "Email",
+      phone: "Telefono",
+      totalBilled: "Totale Fatturato",
+      paidAmount: "Importo Pagato",
+      pendingAmount: "Importo in Attesa",
+      overdueAmount: "Importo Scaduto",
+      paymentTerms: "Termini di Pagamento",
+      createdAt: "Data di Creazione",
       form: {
+        name: "Nome",
+        namePlaceholder: "Inserisci il nome del cliente",
+        email: "Email",
+        emailPlaceholder: "Inserisci l'email",
+        phone: "Telefono",
+        phonePlaceholder: "Inserisci il numero di telefono",
+        address: "Indirizzo",
+        addressPlaceholder: "Inserisci l'indirizzo",
+        city: "Città",
+        cityPlaceholder: "Inserisci la città",
+        state: "Provincia",
+        statePlaceholder: "Inserisci la provincia",
+        country: "Paese",
+        countryPlaceholder: "Seleziona il paese",
+        paymentTerms: "Termini di Pagamento (giorni)",
+        paymentTermsPlaceholder: "30"
+      },
+      messages: {
+        createSuccess: "Cliente creato con successo",
+        updateSuccess: "Cliente aggiornato con successo", 
+        deleteSuccess: "Cliente eliminato con successo",
+        deleteConfirm: "Sei sicuro di voler eliminare questo cliente?"
+      }
+    },
+    settings: {
+      title: "Impostazioni",
+      company: {
+        title: "Informazioni Azienda",
         name: "Nome Azienda",
         email: "Email",
         phone: "Telefono",
         address: "Indirizzo",
-        addressPlaceholder: "Inserisci indirizzo completo",
         city: "Città",
-        cityPlaceholder: "Inserisci città",
-        state: "Stato",
-        statePlaceholder: "Inserisci stato",
+        state: "Provincia",
         country: "Paese",
-        countryPlaceholder: "Seleziona paese",
-        paymentTerms: "Termini di Pagamento (giorni)"
-      }
-    },
-    settings: {
-      company: {
-        title: "Informazioni Azienda",
-        name: "Nome Azienda",
-        email: "Indirizzo Email",
-        phone: "Numero di Telefono",
-        address: "Indirizzo",
         website: "Sito Web",
-        taxId: "Codice Fiscale",
-        saved: "Informazioni azienda salvate con successo",
-        error: "Errore nel salvare le informazioni azienda"
-      },
-      security: {
-        title: "Impostazioni Sicurezza",
-        updateEmail: "Aggiorna Indirizzo Email",
-        newEmail: "Nuovo Indirizzo Email",
-        changePassword: "Cambia Password",
-        currentPassword: "Password Attuale",
-        newPassword: "Nuova Password",
-        confirmPassword: "Conferma Nuova Password",
-        passwordMismatch: "Le password non corrispondono",
-        passwordTooShort: "La password deve essere di almeno 8 caratteri",
-        passwordChanged: "Password cambiata con successo",
-        passwordError: "Errore nel cambiare la password",
-        emailUpdated: "Email aggiornata con successo",
-        emailError: "Errore nell'aggiornare l'email"
+        taxId: "Partita IVA"
       },
       preferences: {
         title: "Preferenze",
-        currency: "Valuta Predefinita",
         language: "Lingua",
-        saved: "Preferenze salvate con successo",
-        error: "Errore nel salvare le preferenze"
-      }
+        currency: "Valuta",
+        timezone: "Fuso Orario",
+        dateFormat: "Formato Data"
+      },
+      security: {
+        title: "Sicurezza",
+        changePassword: "Cambia Password",
+        currentPassword: "Password Attuale",
+        newPassword: "Nuova Password",
+        confirmPassword: "Conferma Password",
+        twoFactor: "Autenticazione a Due Fattori"
+      },
+      messages: {
+        saveSuccess: "Impostazioni salvate con successo",
+        passwordChanged: "Password cambiata con successo"
+}
     }
   }
+}
 };
 
 export const LanguageContext = createContext();
