@@ -239,29 +239,30 @@ const handlePDFPreview = async (bill, e) => {
             </tbody>
           </table>
         </div>
-      </Card>
+</Card>
 
-      {filteredBills.length === 0 && bills.length > 0 && (
-        <div className="text-center py-12">
-          <div className="p-4 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-            <ApperIcon name="Search" className="h-8 w-8 text-indigo-600" />
+      <>
+        {filteredBills.length === 0 && bills.length > 0 && (
+          <div className="text-center py-12">
+            <div className="p-4 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+              <ApperIcon name="Search" className="h-8 w-8 text-indigo-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No bills found</h3>
+            <p className="text-gray-600">Try adjusting your search or filter criteria.</p>
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No bills found</h3>
-          <p className="text-gray-600">Try adjusting your search or filter criteria.</p>
-        </div>
-</div>
-      )}
+        )}
 
-      {/* PDF Preview Modal */}
-      {showPDFModal && selectedBill && (
-        <PDFPreviewModal
-          bill={selectedBill}
-          onClose={() => {
-            setShowPDFModal(false);
-            setSelectedBill(null);
-          }}
-        />
-      )}
+        {/* PDF Preview Modal */}
+        {showPDFModal && selectedBill && (
+          <PDFPreviewModal
+            bill={selectedBill}
+            onClose={() => {
+              setShowPDFModal(false);
+              setSelectedBill(null);
+            }}
+          />
+        )}
+      </>
     </div>
   );
 };
