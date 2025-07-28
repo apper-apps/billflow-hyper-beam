@@ -46,9 +46,14 @@ const [statusFilter, setStatusFilter] = useState("all");
     loadData();
   }, []);
 
-  const getClientName = (clientId) => {
+const getClientName = (clientId) => {
+    // Handle lookup field - clientId might be an object with Id and Name
+    if (typeof clientId === 'object' && clientId !== null) {
+      return clientId.Name || "Unknown Client";
+    }
+    // Handle direct ID reference
     const client = clients.find(c => c.Id === clientId);
-    return client ? client.name : "Unknown Client";
+    return client ? client.Name : "Unknown Client";
   };
 
   const filteredBills = bills.filter(bill => {

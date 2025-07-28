@@ -140,7 +140,7 @@ const BillDetail = () => {
                     <ApperIcon name="Building2" className="h-5 w-5 text-white" />
                   </div>
                   <div className="ml-4 flex-1">
-                    <h4 className="font-semibold text-gray-900">{client.name}</h4>
+<h4 className="font-semibold text-gray-900">{client.Name}</h4>
                     <p className="text-gray-600">{client.email}</p>
                     {client.phone && <p className="text-gray-600">{client.phone}</p>}
                     {client.address && (
@@ -309,8 +309,8 @@ const handleSubmit = async (e) => {
         // Process payment through gateway
         const paymentResult = formData.gateway === "paystack" 
           ? await paymentService.processPaystackPayment({
-              amount: formData.amount,
-              email: "client@example.com"
+amount: formData.amount,
+              email: client.email || client.Email || "client@example.com"
             })
           : await paymentService.processFlutterwavePayment({
               amount: formData.amount,

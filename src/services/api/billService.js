@@ -31,7 +31,13 @@ export const billService = {
         return [];
       }
 
-      return response.data || [];
+// Handle lookup fields properly
+      const data = response.data || [];
+      return data.map(bill => ({
+        ...bill,
+        // Ensure clientId lookup is handled consistently
+        clientId: typeof bill.clientId === 'object' ? bill.clientId : bill.clientId
+      }));
     } catch (error) {
       if (error?.response?.data?.message) {
         console.error("Error fetching bills:", error?.response?.data?.message);
@@ -69,7 +75,15 @@ export const billService = {
         return null;
       }
 
-      return response.data;
+const data = response.data;
+      if (data) {
+        // Ensure clientId lookup is handled consistently
+        return {
+          ...data,
+          clientId: typeof data.clientId === 'object' ? data.clientId : data.clientId
+        };
+      }
+      return data;
     } catch (error) {
       if (error?.response?.data?.message) {
         console.error(`Error fetching bill with ID ${id}:`, error?.response?.data?.message);
@@ -123,7 +137,7 @@ export const billService = {
           <div style="margin-bottom: 30px;">
             <h3 style="color: #333; margin-bottom: 15px;">Bill To:</h3>
             <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
-              <p style="margin: 0; font-weight: bold; font-size: 16px;">${clientData.Name || clientData.name}</p>
+<p style="margin: 0; font-weight: bold; font-size: 16px;">${clientData.Name || clientData.name || 'Client Name'}</p>
               <p style="margin: 5px 0; color: #666;">${clientData.email}</p>
               ${clientData.phone ? `<p style="margin: 5px 0; color: #666;">${clientData.phone}</p>` : ''}
               ${clientData.address ? `<p style="margin: 5px 0; color: #666;">${clientData.address}</p>` : ''}
