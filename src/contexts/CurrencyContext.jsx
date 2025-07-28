@@ -10,7 +10,11 @@ const currencySymbols = {
   AUD: "A$",
   JPY: "¥",
   MXN: "$",
-  BRL: "R$"
+  BRL: "R$",
+  GHS: "₵",
+  NGN: "₦",
+  ZAR: "R",
+  XOF: "CFA"
 };
 
 export const CurrencyProvider = ({ children }) => {

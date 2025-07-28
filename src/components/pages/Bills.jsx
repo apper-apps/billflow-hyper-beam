@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { format, parseISO } from "date-fns";
-import Card from "@/components/atoms/Card";
-import Button from "@/components/atoms/Button";
+import html2pdf from "html2pdf.js";
+import { billService } from "@/services/api/billService";
+import { clientService } from "@/services/api/clientService";
+import ApperIcon from "@/components/ApperIcon";
 import SearchBar from "@/components/molecules/SearchBar";
 import StatusPill from "@/components/molecules/StatusPill";
-import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
-import { billService } from "@/services/api/billService";
-import { clientService } from "@/services/api/clientService";
-
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
 const Bills = () => {
   const navigate = useNavigate();
   const [bills, setBills] = useState([]);
@@ -20,7 +20,9 @@ const Bills = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+const [statusFilter, setStatusFilter] = useState("all");
+  const [showPDFModal, setShowPDFModal] = useState(false);
+  const [selectedBill, setSelectedBill] = useState(null);
 
   const loadData = async () => {
     try {
@@ -70,9 +72,23 @@ const Bills = () => {
     }
   };
 
+const handlePDFPreview = async (bill, e) => {
+    e.stopPropagation();
+    try {
+      const client = clients.find(c => c.Id === bill.clientId);
+      if (!client) {
+        toast.error("Client data not found");
+        return;
+      }
+      setSelectedBill({ ...bill, client });
+      setShowPDFModal(true);
+    } catch (err) {
+      toast.error("Failed to generate PDF preview");
+    }
+  };
+
   if (loading) return <Loading type="table" count={6} />;
   if (error) return <Error message={error} onRetry={loadData} />;
-
   if (bills.length === 0) {
     return (
       <Empty
@@ -187,7 +203,7 @@ const Bills = () => {
                     <StatusPill status={bill.status} />
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end space-x-2">
+<div className="flex items-center justify-end space-x-2">
                       {bill.status === "pending" && (
                         <Button
                           size="sm"
@@ -198,6 +214,14 @@ const Bills = () => {
                           Mark Paid
                         </Button>
                       )}
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={(e) => handlePDFPreview(bill, e)}
+                      >
+                        <ApperIcon name="FileText" className="h-4 w-4 mr-1" />
+                        PDF
+                      </Button>
                       <Button
                         size="sm"
                         variant="ghost"
@@ -225,7 +249,84 @@ const Bills = () => {
           <h3 className="text-lg font-semibold text-gray-900 mb-2">No bills found</h3>
           <p className="text-gray-600">Try adjusting your search or filter criteria.</p>
         </div>
+</div>
       )}
+
+      {/* PDF Preview Modal */}
+      {showPDFModal && selectedBill && (
+        <PDFPreviewModal
+          bill={selectedBill}
+          onClose={() => {
+            setShowPDFModal(false);
+            setSelectedBill(null);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+// PDF Preview Modal Component
+const PDFPreviewModal = ({ bill, onClose }) => {
+  const [pdfContent, setPdfContent] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const generatePreview = async () => {
+      try {
+        const content = await billService.generatePDF(bill.Id, bill.client);
+        setPdfContent(content);
+      } catch (err) {
+        toast.error("Failed to generate PDF preview");
+      } finally {
+        setLoading(false);
+      }
+    };
+    generatePreview();
+  }, [bill]);
+
+  const handleDownload = () => {
+    const element = document.createElement('div');
+    element.innerHTML = pdfContent;
+    
+    const opt = {
+      margin: 1,
+      filename: `Bill-${bill.billNumber}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <Card className="w-full max-w-4xl max-h-[90vh] overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b">
+          <h2 className="text-xl font-bold text-gray-900">PDF Preview - {bill.billNumber}</h2>
+          <div className="flex space-x-2">
+            <Button onClick={handleDownload} disabled={loading}>
+              <ApperIcon name="Download" className="h-4 w-4 mr-2" />
+              Download PDF
+            </Button>
+            <Button variant="ghost" size="sm" onClick={onClose}>
+              <ApperIcon name="X" className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+        <div className="p-6 overflow-auto max-h-[calc(90vh-120px)]">
+          {loading ? (
+            <div className="flex items-center justify-center h-64">
+              <ApperIcon name="Loader2" className="h-8 w-8 animate-spin text-indigo-600" />
+            </div>
+          ) : (
+            <div 
+              className="bg-white shadow-lg rounded-lg"
+              dangerouslySetInnerHTML={{ __html: pdfContent }}
+            />
+          )}
+        </div>
+      </Card>
     </div>
   );
 };

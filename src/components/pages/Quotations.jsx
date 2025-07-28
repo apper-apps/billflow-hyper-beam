@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { format, parseISO } from "date-fns";
-import Card from "@/components/atoms/Card";
-import Button from "@/components/atoms/Button";
+import html2pdf from "html2pdf.js";
+import { clientService } from "@/services/api/clientService";
+import { quotationService } from "@/services/api/quotationService";
+import ApperIcon from "@/components/ApperIcon";
 import SearchBar from "@/components/molecules/SearchBar";
 import StatusPill from "@/components/molecules/StatusPill";
-import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
-import { quotationService } from "@/services/api/quotationService";
-import { clientService } from "@/services/api/clientService";
-
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
 const Quotations = () => {
   const navigate = useNavigate();
   const [quotations, setQuotations] = useState([]);
@@ -21,6 +21,9 @@ const Quotations = () => {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+
+const [showPDFModal, setShowPDFModal] = useState(false);
+  const [selectedQuotation, setSelectedQuotation] = useState(null);
 
   const loadData = async () => {
     try {
@@ -67,6 +70,20 @@ const Quotations = () => {
       loadData();
     } catch (err) {
       toast.error("Failed to update quotation status");
+    }
+  };
+const handlePDFPreview = async (quotation, e) => {
+    e.stopPropagation();
+    try {
+      const client = clients.find(c => c.Id === quotation.clientId);
+      if (!client) {
+        toast.error("Client data not found");
+        return;
+      }
+      setSelectedQuotation({ ...quotation, client });
+      setShowPDFModal(true);
+    } catch (err) {
+      toast.error("Failed to generate PDF preview");
     }
   };
 
@@ -176,7 +193,7 @@ const Quotations = () => {
                   Created {format(parseISO(quotation.createdAt), "MMM dd, yyyy")}
                 </span>
                 
-                <div className="flex space-x-2">
+<div className="flex space-x-2">
                   {quotation.status === "draft" && (
                     <Button
                       size="sm"
@@ -208,6 +225,15 @@ const Quotations = () => {
                       </Button>
                     </>
                   )}
+                  
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={(e) => handlePDFPreview(quotation, e)}
+                  >
+                    <ApperIcon name="FileText" className="h-3 w-3 mr-1" />
+                    PDF
+                  </Button>
                 </div>
               </div>
             </div>
@@ -224,6 +250,82 @@ const Quotations = () => {
           <p className="text-gray-600">Try adjusting your search or filter criteria.</p>
         </div>
       )}
+{/* PDF Preview Modal */}
+      {showPDFModal && selectedQuotation && (
+        <QuotationPDFModal
+          quotation={selectedQuotation}
+          onClose={() => {
+            setShowPDFModal(false);
+            setSelectedQuotation(null);
+          }}
+        />
+      )}
+    </div>
+  );
+};
+
+// Quotation PDF Preview Modal Component
+const QuotationPDFModal = ({ quotation, onClose }) => {
+  const [pdfContent, setPdfContent] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const generatePreview = async () => {
+      try {
+        const content = await quotationService.generatePDF(quotation.Id, quotation.client);
+        setPdfContent(content);
+      } catch (err) {
+        toast.error("Failed to generate PDF preview");
+      } finally {
+        setLoading(false);
+      }
+    };
+    generatePreview();
+  }, [quotation]);
+
+  const handleDownload = () => {
+    const element = document.createElement('div');
+    element.innerHTML = pdfContent;
+    
+    const opt = {
+      margin: 1,
+      filename: `Quotation-${quotation.Id.toString().padStart(6, '0')}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <Card className="w-full max-w-4xl max-h-[90vh] overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b">
+          <h2 className="text-xl font-bold text-gray-900">Quotation PDF Preview</h2>
+          <div className="flex space-x-2">
+            <Button onClick={handleDownload} disabled={loading}>
+              <ApperIcon name="Download" className="h-4 w-4 mr-2" />
+              Download PDF
+            </Button>
+            <Button variant="ghost" size="sm" onClick={onClose}>
+              <ApperIcon name="X" className="h-5 w-5" />
+            </Button>
+          </div>
+        </div>
+        <div className="p-6 overflow-auto max-h-[calc(90vh-120px)]">
+          {loading ? (
+            <div className="flex items-center justify-center h-64">
+              <ApperIcon name="Loader2" className="h-8 w-8 animate-spin text-purple-600" />
+            </div>
+          ) : (
+            <div 
+              className="bg-white shadow-lg rounded-lg"
+              dangerouslySetInnerHTML={{ __html: pdfContent }}
+            />
+          )}
+        </div>
+      </Card>
     </div>
   );
 };
