@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { format, parseISO } from "date-fns";
-import Card from "@/components/atoms/Card";
-import Button from "@/components/atoms/Button";
-import SearchBar from "@/components/molecules/SearchBar";
+import { countries } from "@/utils/countries";
+import { billService } from "@/services/api/billService";
+import { clientService } from "@/services/api/clientService";
 import ApperIcon from "@/components/ApperIcon";
+import SearchBar from "@/components/molecules/SearchBar";
 import Loading from "@/components/ui/Loading";
 import Error from "@/components/ui/Error";
 import Empty from "@/components/ui/Empty";
-import { clientService } from "@/services/api/clientService";
-import { billService } from "@/services/api/billService";
+import Button from "@/components/atoms/Button";
+import Select from "@/components/atoms/Select";
+import Card from "@/components/atoms/Card";
+import { LanguageContext } from "@/contexts/LanguageContext";
 
 const Clients = () => {
   const navigate = useNavigate();
+  const { t } = useContext(LanguageContext);
   const [clients, setClients] = useState([]);
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -74,12 +78,12 @@ const Clients = () => {
   if (error) return <Error message={error} onRetry={loadData} />;
 
   if (clients.length === 0) {
-    return (
+return (
       <Empty
         icon="Users"
-        title="No clients yet"
-        description="Start building your client base by adding your first client."
-        actionLabel="Add Client"
+        title={t('clients.empty.title')}
+        description={t('clients.empty.description')}
+        actionLabel={t('clients.empty.action')}
         onAction={() => setShowCreateModal(true)}
       />
     );
@@ -87,24 +91,24 @@ const Clients = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
+{/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Clients</h1>
-          <p className="text-gray-600">Manage your client relationships and payment history</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('clients.title')}</h1>
+          <p className="text-gray-600">{t('clients.subtitle')}</p>
         </div>
         <Button onClick={() => setShowCreateModal(true)} className="mt-4 sm:mt-0">
           <ApperIcon name="Plus" className="h-4 w-4 mr-2" />
-          Add Client
+          {t('clients.actions.add')}
         </Button>
       </div>
 
       {/* Search */}
-      <div className="max-w-md">
+<div className="max-w-md">
         <SearchBar
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search clients..."
+          placeholder={t('clients.search.placeholder')}
         />
       </div>
 
@@ -124,32 +128,35 @@ const Clients = () => {
                     <ApperIcon name="Building2" className="h-6 w-6 text-white" />
                   </div>
                   <div className="ml-3">
-                    <h3 className="text-lg font-semibold text-gray-900">{client.name}</h3>
+<h3 className="text-lg font-semibold text-gray-900">{client.name}</h3>
                     <p className="text-sm text-gray-600">{client.email}</p>
+                    {client.address && (
+                      <p className="text-sm text-gray-500">{client.address}</p>
+                    )}
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-500">Payment Terms</p>
-                  <p className="font-medium text-gray-900">{client.paymentTerms} days</p>
+<div className="text-right">
+                  <p className="text-sm text-gray-500">{t('clients.card.paymentTerms')}</p>
+                  <p className="font-medium text-gray-900">{client.paymentTerms} {t('common.days')}</p>
                 </div>
               </div>
 
-              <div className="space-y-3">
+<div className="space-y-3">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Total Billed</span>
+                  <span className="text-gray-600">{t('clients.card.totalBilled')}</span>
                   <span className="font-medium text-gray-900">
                     ${stats.totalBilled.toLocaleString()}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Paid Amount</span>
+                  <span className="text-gray-600">{t('clients.card.paidAmount')}</span>
                   <span className="font-medium text-emerald-600">
                     ${stats.paidAmount.toLocaleString()}
                   </span>
                 </div>
                 {stats.pendingAmount > 0 && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Pending</span>
+                    <span className="text-gray-600">{t('clients.card.pending')}</span>
                     <span className="font-medium text-amber-600">
                       ${stats.pendingAmount.toLocaleString()}
                     </span>
@@ -157,7 +164,7 @@ const Clients = () => {
                 )}
                 {stats.overdueAmount > 0 && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Overdue</span>
+                    <span className="text-gray-600">{t('clients.card.overdue')}</span>
                     <span className="font-medium text-red-600">
                       ${stats.overdueAmount.toLocaleString()}
                     </span>
@@ -165,10 +172,10 @@ const Clients = () => {
                 )}
               </div>
 
-              <div className="mt-4 pt-4 border-t border-gray-200">
+<div className="mt-4 pt-4 border-t border-gray-200">
                 <div className="flex items-center justify-between text-xs text-gray-500">
-                  <span>Added {format(parseISO(client.createdAt), "MMM dd, yyyy")}</span>
-                  <span>{stats.totalBills} bills</span>
+                  <span>{t('clients.card.added')} {format(parseISO(client.createdAt), "MMM dd, yyyy")}</span>
+                  <span>{stats.totalBills} {t('clients.card.bills')}</span>
                 </div>
               </div>
             </Card>
@@ -192,15 +199,18 @@ const Clients = () => {
 
 // Create Client Modal Component
 const CreateClientModal = ({ onClose, onSuccess }) => {
-const [formData, setFormData] = useState({
+const { t } = useContext(LanguageContext);
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
+    address: "",
     city: "",
     state: "",
     country: "",
     paymentTerms: 30
   });
+  const [loading, setLoading] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -227,18 +237,18 @@ const handleChange = (e) => {
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <Card className="w-full max-w-lg p-6">
+<Card className="w-full max-w-lg p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">Add New Client</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t('clients.modal.title')}</h2>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <ApperIcon name="X" className="h-5 w-5" />
           </Button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-<div>
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Company Name
+              {t('clients.form.name')}
             </label>
             <input
               type="text"
@@ -252,7 +262,7 @@ const handleChange = (e) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email
+              {t('clients.form.email')}
             </label>
             <input
               type="email"
@@ -266,7 +276,7 @@ const handleChange = (e) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Phone
+              {t('clients.form.phone')}
             </label>
             <input
               type="tel"
@@ -277,51 +287,70 @@ const handleChange = (e) => {
             />
           </div>
 
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {t('clients.form.address')}
+            </label>
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              placeholder={t('clients.form.addressPlaceholder')}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                City
+                {t('clients.form.city')}
               </label>
               <input
                 type="text"
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
-                placeholder="Enter city"
+                placeholder={t('clients.form.cityPlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                State
+                {t('clients.form.state')}
               </label>
               <input
                 type="text"
                 name="state"
                 value={formData.state}
                 onChange={handleChange}
-                placeholder="Enter state"
+                placeholder={t('clients.form.statePlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Country
+                {t('clients.form.country')}
               </label>
-              <input
-                type="text"
+              <Select
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
-                placeholder="Enter country"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                options={[
+                  { value: "", text: t('clients.form.countryPlaceholder') },
+                  ...countries.map(country => ({
+                    value: country.name,
+                    text: country.name
+                  }))
+                ]}
+                className="w-full"
               />
             </div>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Payment Terms (days)
+              {t('clients.form.paymentTerms')}
             </label>
             <select
               name="paymentTerms"
@@ -329,19 +358,19 @@ const handleChange = (e) => {
               onChange={handleChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             >
-              <option value={15}>15 days</option>
-              <option value={30}>30 days</option>
-              <option value={45}>45 days</option>
-              <option value={60}>60 days</option>
+              <option value={15}>15 {t('common.days')}</option>
+              <option value={30}>30 {t('common.days')}</option>
+              <option value={45}>45 {t('common.days')}</option>
+              <option value={60}>60 {t('common.days')}</option>
             </select>
           </div>
 
           <div className="flex justify-end space-x-3 pt-4">
             <Button type="button" variant="secondary" onClick={onClose}>
-              Cancel
+              {t('common.cancel')}
             </Button>
             <Button type="submit" disabled={loading}>
-              {loading ? "Creating..." : "Create Client"}
+              {loading ? t('clients.modal.creating') : t('clients.modal.create')}
             </Button>
           </div>
         </form>
